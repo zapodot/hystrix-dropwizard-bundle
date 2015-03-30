@@ -47,6 +47,8 @@ public class HystrixBundle implements Bundle {
      * Creates a bundle instance with default settings i.e the HystrixMetricsStreamServlet will be added to
      * the admin context mapped by the @{link #DEFAULT_STREAM_PATH} path and the Hystrix to
      * DropWizard metrics publisher is enabled
+     *
+     * @return an HystrixBundle instance configured using default settings
      */
     public static HystrixBundle withDefaultSettings() {
         return builder().build();
@@ -54,6 +56,7 @@ public class HystrixBundle implements Bundle {
 
     /**
      * Creates a new @{link Builder} that may be used to configure this bundle's behaviour.
+     *
      * @return a new Builder
      */
     public static Builder builder() {

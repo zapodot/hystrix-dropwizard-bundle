@@ -13,6 +13,7 @@
     <name>${project.artifactId}</name>
     <description>A hystrix bundle for DropWizard</description>
     <url>https://github.com/zapodot/hystrix-dropwizard-bundle</url>
+    <inceptionYear>2015</inceptionYear>
     <issueManagement>
         <system>github</system>
         <url>https://github.com/zapodot/hystrix-dropwizard-bundle/issues</url>
@@ -202,8 +203,13 @@
                     <windowtitle>Hystrix DropWizard Bundle API</windowtitle>
                     <encoding>UTF-8</encoding>
                     <links>
-                        <link>http://junit.org/javadoc/latest/</link>
+                        <link>http://netflix.github.io/Hystrix/javadoc/</link>
+                        <link>http://dropwizard.github.io/dropwizard/0.8.0/dropwizard-core/apidocs/</link>
                     </links>
+                    <header>
+                        <![CDATA[<b><a href="https://github.com/zapodot/hystrix-dropwzard-bundle">Hystrix DropWizard Bundle API</a>, v. ${project.version}</b>]]></header>
+                    <bottom>
+                        <![CDATA[Copyright &#169; {inceptionYear}&#x2013;{currentYear} <a href="http://zapodot.org">Sondre Eikanger Kval&oslash;</a>. All rights reserved..]]> </bottom>
                     <locale>en</locale>
                     <keywords>true</keywords>
                 </configuration>
