@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/zapodot/hystrix-dropwizard-bundle.svg?branch=master)](https://travis-ci.org/zapodot/hystrix-dropwizard-bundle)
 [![Coverage Status](https://coveralls.io/repos/zapodot/hystrix-dropwizard-bundle/badge.svg)](https://coveralls.io/r/zapodot/hystrix-dropwizard-bundle)
 [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](//github.com/zapodot/embedded-db-junit/blob/master/LICENSE)
+[![Analytics](https://ga-beacon.appspot.com/UA-40926073-4/hystrix-dropwzard-bundle/README.md)](https://github.com/igrigorik/ga-beacon)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.zapodot/hystrix-dropwzard-bundle/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.zapodot/hystrix-dropwzard-bundle)
 
 A [Hystrix](//github.com/Netflix/Hystrix) bundle for [DropWizard](//github.com/dropwizard/dropwizard) which adds a Hystrix event stream to the admin context and enables Metrics reporting of Hystrix metrics
