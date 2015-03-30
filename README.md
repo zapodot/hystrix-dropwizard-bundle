@@ -19,3 +19,9 @@ This library is released under an [Apache Licence (V2)](http://www.apache.org/li
 #### SBT
 ```scala
 libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "0.3"
+
+### Add bundle to your application
+
+```java
+
+```

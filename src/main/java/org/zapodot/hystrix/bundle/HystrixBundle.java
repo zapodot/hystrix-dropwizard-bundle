@@ -20,20 +20,21 @@ public class HystrixBundle implements Bundle {
      * The default path that will be used for binding the HystrixMetricsStreamServlet to the admin context.
      */
     public static final String DEFAULT_STREAM_PATH = "/hystrix.stream";
-    private static final Logger logger = LoggerFactory.getLogger(HystrixBundle.class);
     public static final String SERVLET_NAME = "hystrixMetricsStream";
+    private static final Logger logger = LoggerFactory.getLogger(HystrixBundle.class);
     private final String adminStreamPath;
     private final String applicationStreamUri;
     private final boolean publishHystrixMetrics;
 
-    /**
-     * A default constructor that will add the HystrixMetricsStreamServlet to the @{link #DEFAULT_STREAM_PATH} path on
-     * the Admin context as well as enable the Hystrix to DropWizard Metrics publisher.
-     */
-    public HystrixBundle() {
-        this(DEFAULT_STREAM_PATH, null, true);
-    }
 
+    /**
+     * The one and only constructor. Use either @{link #withDefaultSettings} or @{link builder}
+     * to construct a new bundle instance
+     *
+     * @param adminStreamPath
+     * @param applicationStreamUri
+     * @param publishHystrixMetrics
+     */
     HystrixBundle(final String adminStreamPath,
                   final String applicationStreamUri,
                   final boolean publishHystrixMetrics) {
@@ -42,10 +43,19 @@ public class HystrixBundle implements Bundle {
         this.publishHystrixMetrics = publishHystrixMetrics;
     }
 
+    /**
+     * Creates a bundle instance with default settings i.e the HystrixMetricsStreamServlet will be added to
+     * the admin context mapped by the @{link #DEFAULT_STREAM_PATH} path and the Hystrix to
+     * DropWizard metrics publisher is enabled
+     */
     public static HystrixBundle withDefaultSettings() {
         return builder().build();
     }
 
+    /**
+     * Creates a new @{link Builder} that may be used to configure this bundle's behaviour.
+     * @return a new Builder
+     */
     public static Builder builder() {
         return new Builder();
     }
@@ -64,9 +74,11 @@ public class HystrixBundle implements Bundle {
                        .addServlet(new ServletHolder(SERVLET_NAME, new HystrixMetricsStreamServlet()), adminStreamPath);
         }
         if (applicationStreamUri != null) {
-            logger.info("Mapping \"{}\" to the HystrixMetricsStreamServlet in the application context", applicationStreamUri);
+            logger.info("Mapping \"{}\" to the HystrixMetricsStreamServlet in the application context",
+                        applicationStreamUri);
             environment.getApplicationContext()
-                       .addServlet(new ServletHolder(SERVLET_NAME, new HystrixMetricsStreamServlet()), applicationStreamUri);
+                       .addServlet(new ServletHolder(SERVLET_NAME, new HystrixMetricsStreamServlet()),
+                                   applicationStreamUri);
         }
         if (publishHystrixMetrics) {
             logger.info("Enabling the Hystrix to DropWizard metrics publisher");
@@ -88,26 +100,53 @@ public class HystrixBundle implements Bundle {
         private String applicationPath;
         private boolean publishHystrixMetrics = true;
 
+        /**
+         * Configure the path that the HystrixMetricsStreamServlet will be mapped to in the admin context
+         *
+         * @param path a valid servlet mapping path
+         * @return the same builder with the adminPath property set to the new value
+         */
         public Builder withAdminStreamUri(final String path) {
             adminPath = path;
             return this;
         }
 
+        /**
+         * Disables the HystrixMetricsStreamServlet from being registered in the admin context
+         *
+         * @return the same builder with the adminPath property set to null
+         */
         public Builder disableStreamServletInAdminContext() {
             adminPath = null;
             return this;
         }
 
+        /**
+         * Enables the registration of the HystrixMetricsStreamServlet in the application context
+         *
+         * @param path the path to map the servlet to (must be a valid servlet mapping path)
+         * @return the same builder with the applicationPath set to the provided value
+         */
         public Builder withApplicationStreamPath(final String path) {
             applicationPath = path;
             return this;
         }
 
+        /**
+         * Disables the Hystrix to DropWizard (i.e CodaHale) Metrics publisher
+         *
+         * @return the same bulder the publisher property set to false
+         */
         public Builder disableMetricsPublisher() {
             publishHystrixMetrics = false;
             return this;
         }
 
+        /**
+         * Builds a new instance of the Bundle based on previous inputs (or defaults if none has been provided).
+         *
+         * @return a new HystrixBundle instance
+         */
         public HystrixBundle build() {
             return new HystrixBundle(adminPath, applicationPath, publishHystrixMetrics);
         }
