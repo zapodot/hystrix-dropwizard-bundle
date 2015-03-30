@@ -25,7 +25,8 @@ This library will eventually be made available through the Sonatype OSS Repo and
 
 #### SBT
 ```scala
-libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "0.3"
+libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "0.1"
+```
 
 ### Add bundle to your application
 
