@@ -13,8 +13,11 @@ This library is released under an [Apache Licence (V2)](http://www.apache.org/li
 ## Why do I need it?
 * You use both DropWizard and Hystrix in your project (or a planning to..) and want your application's Hystrix metrix available in a [Hystrix Dashboard](//github.com/Netflix/Hystrix/tree/master/hystrix-dashboard) (either directly or via [Turbine](//github.com/Netflix/Turbine))
 
+## Alternatives
+* If you want a even tighter integration between Hystrix and DropWizard, you should have a look at [Yammer's Tenacity project](//github.com/yammer/tenacity)
+
 ## Usage
-This library will eventually be made available through the Sonatype OSS Repo and should thus be widely available.
+This library is distributed through the Sonatype OSS Repo and should thus be widely available.
 ### Add dependency
 #### Maven
 ```xml
