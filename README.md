@@ -12,6 +12,7 @@ This library is released under an [Apache Licence (V2)](http://www.apache.org/li
 
 ## Why do I need it?
 * You use both DropWizard and Hystrix in your project (or a planning to..) and want your application's Hystrix metrix available in a [Hystrix Dashboard](//github.com/Netflix/Hystrix/tree/master/hystrix-dashboard) (either directly or via [Turbine](//github.com/Netflix/Turbine))
+* It is easy to set up as it really requires you to add only a single line of code in your application (see examples below)
 
 ## Alternatives
 * If you want a even tighter integration between Hystrix and DropWizard, you should have a look at [Yammer's Tenacity project](//github.com/yammer/tenacity)
