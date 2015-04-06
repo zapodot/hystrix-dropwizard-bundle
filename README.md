@@ -15,7 +15,7 @@ This library is released under an [Apache Licence (V2)](http://www.apache.org/li
 * It is easy to set up as it really requires you to add only a single line of code in your application (see examples below)
 
 ## Alternatives
-* If you want a even tighter integration between Hystrix and DropWizard, you should have a look at [Yammer's Tenacity project](//github.com/yammer/tenacity)
+* If you want a even tighter integration between Hystrix and DropWizard, you should have a look at [Yammer's Tenacity project](//github.com/yammer/tenacity). Note: Tenacity implies (but does not require) that you are using [Breakerbox](//github.com/yammer/breakerbox) for managing Hystrix runtime configuration.
 
 ## Usage
 This library is distributed through the Sonatype OSS Repo and should thus be widely available.
