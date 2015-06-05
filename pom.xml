@@ -54,9 +54,9 @@
     </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dropwizard.version>0.8.0</dropwizard.version>
-        <hystrix.version>1.4.0</hystrix.version>
-        <slf4j.version>1.7.10</slf4j.version>
+        <dropwizard.version>0.8.1</dropwizard.version>
+        <hystrix.version>1.4.10</hystrix.version>
+        <slf4j.version>1.7.12</slf4j.version>
         <mockito.version>1.10.19</mockito.version>
         <junit.version>4.12</junit.version>
         <guava.version>18.0</guava.version>
