@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SimpleAppTest {
 
     @ClassRule
-    public static final DropwizardAppRule<AppConfiguration> APP_RULE = new DropwizardAppRule<>(App.class, null);
+    public static final DropwizardAppRule<AppConfiguration> APP_RULE = new DropwizardAppRule<>(App.class, new AppConfiguration());
 
     @Test
     public void testStuff() throws Exception {
