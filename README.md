@@ -8,7 +8,7 @@
 A [Hystrix](//github.com/Netflix/Hystrix) bundle for [DropWizard](//github.com/dropwizard/dropwizard) which adds a Hystrix event stream to the admin context and enables Metrics reporting of Hystrix metrics
 
 ## Licence
-This library is released under an [Apache Licence (V2)](http://www.apache.org/licenses/LICENSE-2.0) license.
+This library is released under an [Apache Licence (V2)](http://www.apache.org/licenses/LICENSE-2.0).
 
 ## Why do I need it?
 * You use both DropWizard and Hystrix in your project (or a planning to..) and want your application's Hystrix metrix available in a [Hystrix Dashboard](//github.com/Netflix/Hystrix/tree/master/hystrix-dashboard) (either directly or via [Turbine](//github.com/Netflix/Turbine))
