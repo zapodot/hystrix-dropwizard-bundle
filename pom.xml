@@ -59,7 +59,7 @@
         <slf4j.version>1.7.21</slf4j.version>
         <mockito.version>1.10.19</mockito.version>
         <junit.version>4.12</junit.version>
-        <guava.version>19.0</guava.version>
+        <guava.version>21.0</guava.version>
 
         <!-- Maven plugins -->
         <maven-javadoc-plugin.version>2.10.2</maven-javadoc-plugin.version>
