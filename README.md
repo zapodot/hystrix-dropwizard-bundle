@@ -26,13 +26,13 @@ This library is distributed through the Sonatype OSS Repo and should thus be wid
 <dependency>
     <groupId>org.zapodot</groupId>
     <artifactId>hystrix-dropwizard-bundle</artifactId>
-    <version>0.5</version>
+    <version>0.6</version>
 </dependency>
 ```
 
 #### SBT
 ```scala
-libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "0.5"
+libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "0.6"
 ```
 
 ### Add bundle to your application
