@@ -7,9 +7,6 @@
     <groupId>org.zapodot</groupId>
     <artifactId>hystrix-dropwizard-bundle</artifactId>
     <version>0.7-SNAPSHOT</version>
-    <prerequisites>
-        <maven>3.2.0</maven>
-    </prerequisites>
     <name>${project.artifactId}</name>
     <description>A hystrix bundle for DropWizard</description>
     <url>https://github.com/zapodot/hystrix-dropwizard-bundle</url>
