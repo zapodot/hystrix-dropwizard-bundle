@@ -54,19 +54,19 @@
     </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dropwizard.version>1.1.0</dropwizard.version>
-        <hystrix.version>1.5.10</hystrix.version>
+        <dropwizard.version>1.1.1</dropwizard.version>
+        <hystrix.version>1.5.12</hystrix.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <mockito.version>2.7.19</mockito.version>
+        <mockito.version>2.8.9</mockito.version>
         <junit.version>4.12</junit.version>
         <guava.version>21.0</guava.version>
 
         <!-- Maven plugins -->
-        <maven-javadoc-plugin.version>2.10.2</maven-javadoc-plugin.version>
-        <nexus-staging-maven-plugin.version>1.6.5</nexus-staging-maven-plugin.version>
-        <maven-source-plugin.version>2.4</maven-source-plugin.version>
-        <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
-        <coveralls-maven-plugin.version>3.1.0</coveralls-maven-plugin.version>
+        <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+        <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+        <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     </properties>
@@ -205,7 +205,7 @@
                     <encoding>UTF-8</encoding>
                     <links>
                         <link>http://netflix.github.io/Hystrix/javadoc/</link>
-                        <link>http://dropwizard.github.io/dropwizard/0.8.0/dropwizard-core/apidocs/</link>
+                        <link>http://dropwizard.github.io/dropwizard/1.1.0/dropwizard-core/apidocs/</link>
                     </links>
                     <header>
                         <![CDATA[<b><a href="https://github.com/zapodot/hystrix-dropwzard-bundle">Hystrix DropWizard Bundle API</a>, v. ${project.version}</b>]]></header>
