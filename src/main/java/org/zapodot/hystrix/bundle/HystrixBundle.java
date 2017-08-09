@@ -3,7 +3,8 @@ package org.zapodot.hystrix.bundle;
 import com.netflix.hystrix.contrib.codahalemetricspublisher.HystrixCodaHaleMetricsPublisher;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 import com.netflix.hystrix.strategy.HystrixPlugins;
-import io.dropwizard.Bundle;
+import io.dropwizard.Configuration;
+import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -14,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * A DropWizard bundle that enables the Hystrix event stream to be registered, and the Hystrix metrics to be integrated
  * with DropWizard's metrics
  */
-public class HystrixBundle implements Bundle {
+public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<T> {
 
     /**
      * The default path that will be used for binding the HystrixMetricsStreamServlet to the admin context.
@@ -69,8 +70,30 @@ public class HystrixBundle implements Bundle {
         HystrixPlugins.reset();
     }
 
+    /**
+     * To configure hystrix metrics publisher based on the configuration sub-class(anonymously?) and override this method
+     * It publishes hystrix metrics if this method returns true
+     *
+     * Example:
+     *
+     * <pre>
+     *  bootstrap.addBundle( new HystrixBundle() {
+     *     @Override
+     *     protected boolean canPublishHystrixMetrics(MyAppConfiguration configuration) {
+     *       return configuration.isEnableHystrixMetrics();
+     *     }
+     *  });
+     * </pre>
+     *
+     * @param configuration
+     * @return boolean which decides whether the metrics to be published or not
+     */
+    protected boolean canPublishHystrixMetrics(T configuration) {
+        return publishHystrixMetrics;
+    }
+
     @Override
-    public void run(final Environment environment) {
+    public void run(final T configuration, final Environment environment) {
         if (adminStreamPath != null) {
             logger.info("Mapping \"{}\" to the HystrixMetricsStreamServlet in the admin context", adminStreamPath);
             environment.getAdminContext()
@@ -83,7 +106,7 @@ public class HystrixBundle implements Bundle {
                        .addServlet(new ServletHolder(SERVLET_NAME, new HystrixMetricsStreamServlet()),
                                    applicationStreamUri);
         }
-        if (publishHystrixMetrics) {
+        if (canPublishHystrixMetrics(configuration)) {
             logger.info("Enabling the Hystrix to DropWizard metrics publisher");
             final HystrixCodaHaleMetricsPublisher metricsPublisher =
                     new HystrixCodaHaleMetricsPublisher(environment.metrics());
@@ -91,8 +114,6 @@ public class HystrixBundle implements Bundle {
         } else {
             logger.info("The Hystrix to DropWizard metrics publisher is disabled");
         }
-
-
     }
 
     /**

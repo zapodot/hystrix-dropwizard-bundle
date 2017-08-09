@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterators;
 import com.netflix.hystrix.contrib.codahalemetricspublisher.HystrixCodaHaleMetricsPublisher;
 import com.netflix.hystrix.strategy.HystrixPlugins;
+import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.junit.Before;
@@ -29,6 +30,8 @@ public class HystrixBundleTest {
 
     private Environment environment;
 
+    private Configuration configuration;
+
     @Before
     public void setUp() throws Exception {
         environment = new Environment(getClass().getName(),
@@ -43,7 +46,7 @@ public class HystrixBundleTest {
     public void testWithDefaults() throws Exception {
         final HystrixBundle hystrixBundle = HystrixBundle.withDefaultSettings();
         hystrixBundle.initialize(bootstrap);
-        hystrixBundle.run(environment);
+        hystrixBundle.run(configuration, environment);
         assertNotNull(environment.getAdminContext()
                                  .getServletContext()
                                  .getServletRegistration(HystrixBundle.SERVLET_NAME));
@@ -58,7 +61,7 @@ public class HystrixBundleTest {
     public void testAddToApplicationContext() throws Exception {
         final HystrixBundle hystrixBundle = HystrixBundle.builder().withApplicationStreamPath(HystrixBundle.DEFAULT_STREAM_PATH).disableStreamServletInAdminContext().build();
         hystrixBundle.initialize(bootstrap);
-        hystrixBundle.run(environment);
+        hystrixBundle.run(configuration, environment);
         assertNotNull(environment.getApplicationContext()
                                  .getServletContext()
                                  .getServletRegistration(HystrixBundle.SERVLET_NAME));
@@ -74,7 +77,7 @@ public class HystrixBundleTest {
         final String adminServletPath = "/my-path";
         final HystrixBundle hystrixBundle = HystrixBundle.builder().withAdminStreamUri(adminServletPath).build();
         hystrixBundle.initialize(bootstrap);
-        hystrixBundle.run(environment);
+        hystrixBundle.run(configuration, environment);
         assertEquals(adminServletPath,
                      Iterators.getOnlyElement(environment.getAdminContext()
                                                          .getServletContext()
@@ -88,7 +91,21 @@ public class HystrixBundleTest {
     public void testDisableMetricsPublisher() throws Exception {
         final HystrixBundle hystrixBundle = HystrixBundle.builder().disableMetricsPublisher().build();
         hystrixBundle.initialize(bootstrap);
-        hystrixBundle.run(environment);
+        hystrixBundle.run(configuration, environment);
         assertFalse(HystrixPlugins.getInstance().getMetricsPublisher() instanceof HystrixCodaHaleMetricsPublisher);
+    }
+
+    @Test
+    public void testConfigurableMetricsPublisher() {
+        boolean publishHystrixMetricsByDefault = false;
+        final HystrixBundle hystrixBundle = new HystrixBundle<Configuration>("", "", publishHystrixMetricsByDefault) {
+            @Override
+            protected boolean canPublishHystrixMetrics(Configuration configuration) {
+                return true; //override using configuration value
+            }
+        };
+        hystrixBundle.initialize(bootstrap);
+        hystrixBundle.run(configuration, environment);
+        assertTrue(HystrixPlugins.getInstance().getMetricsPublisher() instanceof HystrixCodaHaleMetricsPublisher);
     }
 }
