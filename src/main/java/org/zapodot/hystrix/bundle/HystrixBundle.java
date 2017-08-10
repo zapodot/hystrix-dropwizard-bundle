@@ -20,6 +20,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
     /**
      * The default path that will be used for binding the HystrixMetricsStreamServlet to the admin context.
      */
+    @SuppressWarnings("squid:S1075")
     public static final String DEFAULT_STREAM_PATH = "/hystrix.stream";
     public static final String SERVLET_NAME = "hystrixMetricsStream";
     private static final Logger logger = LoggerFactory.getLogger(HystrixBundle.class);
@@ -90,6 +91,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
      * @return boolean which decides whether the metrics to be published or not
      * @see Builder#disableMetricsPublisher()
      */
+    @SuppressWarnings("unused")
     protected boolean canPublishHystrixMetrics(T configuration) {
         return publishHystrixMetrics;
     }
