@@ -71,11 +71,12 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
     }
 
     /**
-     * To configure hystrix metrics publisher based on the configuration sub-class(anonymously?) and override this method
-     * It publishes hystrix metrics if this method returns true
-     *
+     * Determines whether Hystrix metrics should be published as Dropwizard Metrics.
+     * By default it follows what was set using the builder at initialization time.
+     * Override to use some other mechanism to decide. Returning true means metrics should be published.
+     * <p>
      * Example:
-     *
+     * </p>
      * <pre>
      *  bootstrap.addBundle( new HystrixBundle() {
      *     @Override
@@ -85,13 +86,21 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
      *  });
      * </pre>
      *
-     * @param configuration
+     * @param configuration the current configuration as provided by DropWizard
      * @return boolean which decides whether the metrics to be published or not
+     * @see Builder#disableMetricsPublisher()
      */
     protected boolean canPublishHystrixMetrics(T configuration) {
         return publishHystrixMetrics;
     }
 
+    /**
+     * Setup method for the {@link ConfiguredBundle}
+     *
+     * @param configuration the configuration as provided by DropWizard
+     * @param environment   the environment as provided by DropWizard
+     * @see ConfiguredBundle#run(Object, Environment)
+     */
     @Override
     public void run(final T configuration, final Environment environment) {
         if (adminStreamPath != null) {
