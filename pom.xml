@@ -63,7 +63,7 @@
         <maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.6.2</maven-compiler-plugin.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
@@ -258,7 +258,6 @@
                     <aggregate>true</aggregate>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 </project>
