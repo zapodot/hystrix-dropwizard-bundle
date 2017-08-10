@@ -26,13 +26,13 @@ This library is distributed through the Sonatype OSS Repo and should thus be wid
 <dependency>
     <groupId>org.zapodot</groupId>
     <artifactId>hystrix-dropwizard-bundle</artifactId>
-    <version>0.7</version>
+    <version>0.8</version>
 </dependency>
 ```
 
 #### SBT
 ```scala
-libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "0.7"
+libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "0.8"
 ```
 
 ### Add bundle to your application
@@ -63,3 +63,14 @@ If you need some other configuration, use the provided Builder (see example belo
         ...
     }
 ```
+
+### Overriding publishing settings
+Starting with version 0.8, you may now implement your own mechanism for specifying whether Hystrix Metrics should be 
+published to DropWizard Metrics by overriding the _canPublishHystrixMetrics_ method:
+```java
+    bootstrap.addBundle( new HystrixBundle() {
+        protected boolean canPublishHystrixMetrics(MyAppConfiguration configuration) {
+            return configuration.isEnableHystrixMetrics();
+        }
+    });
+``` 
