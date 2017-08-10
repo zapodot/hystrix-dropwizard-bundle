@@ -80,7 +80,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
      * </p>
      * <pre>
      *  bootstrap.addBundle( new HystrixBundle() {
-     *     @Override
+     *   
      *     protected boolean canPublishHystrixMetrics(MyAppConfiguration configuration) {
      *       return configuration.isEnableHystrixMetrics();
      *     }
