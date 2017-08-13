@@ -31,9 +31,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
     private final boolean publishHystrixMetrics;
 
     public HystrixBundle() {
-        this.adminStreamPath = DEFAULT_STREAM_PATH;
-        this.applicationStreamUri = null;
-        this.publishHystrixMetrics = DEFAULT_PUBLISH_HYSTRIX_METRICS;
+        this(DEFAULT_STREAM_PATH, null, DEFAULT_PUBLISH_HYSTRIX_METRICS);
     }
 
     /**
