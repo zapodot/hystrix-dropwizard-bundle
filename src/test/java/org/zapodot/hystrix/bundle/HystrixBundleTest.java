@@ -43,8 +43,8 @@ public class HystrixBundleTest {
     }
 
     @Test
-    public void testWithDefaults() throws Exception {
-        final HystrixBundle hystrixBundle = HystrixBundle.withDefaultSettings();
+    public void testWithDefaultsUsingConstructor() throws Exception {
+        final HystrixBundle hystrixBundle = new HystrixBundle();
         hystrixBundle.initialize(bootstrap);
         hystrixBundle.run(configuration, environment);
         assertNotNull(environment.getAdminContext()
@@ -53,6 +53,21 @@ public class HystrixBundleTest {
         assertNull(environment.getApplicationContext()
                               .getServletContext()
                               .getServletRegistration(HystrixBundle.SERVLET_NAME));
+        assertTrue(HystrixPlugins.getInstance().getMetricsPublisher() instanceof HystrixCodaHaleMetricsPublisher);
+        verifyZeroInteractions(bootstrap);
+    }
+
+    @Test
+    public void testWithDefaultsUsingBuilder() throws Exception {
+        final HystrixBundle hystrixBundle = HystrixBundle.withDefaultSettings();
+        hystrixBundle.initialize(bootstrap);
+        hystrixBundle.run(configuration, environment);
+        assertNotNull(environment.getAdminContext()
+                .getServletContext()
+                .getServletRegistration(HystrixBundle.SERVLET_NAME));
+        assertNull(environment.getApplicationContext()
+                .getServletContext()
+                .getServletRegistration(HystrixBundle.SERVLET_NAME));
         assertTrue(HystrixPlugins.getInstance().getMetricsPublisher() instanceof HystrixCodaHaleMetricsPublisher);
         verifyZeroInteractions(bootstrap);
     }

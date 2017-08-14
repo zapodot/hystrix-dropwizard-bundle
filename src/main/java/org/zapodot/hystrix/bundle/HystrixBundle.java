@@ -22,12 +22,17 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
      */
     @SuppressWarnings("squid:S1075")
     public static final String DEFAULT_STREAM_PATH = "/hystrix.stream";
+    public static final boolean DEFAULT_PUBLISH_HYSTRIX_METRICS = true;
     public static final String SERVLET_NAME = "hystrixMetricsStream";
     private static final Logger logger = LoggerFactory.getLogger(HystrixBundle.class);
+
     private final String adminStreamPath;
     private final String applicationStreamUri;
     private final boolean publishHystrixMetrics;
 
+    public HystrixBundle() {
+        this(DEFAULT_STREAM_PATH, null, DEFAULT_PUBLISH_HYSTRIX_METRICS);
+    }
 
     /**
      * The one and only constructor. Use either @{link #withDefaultSettings} or @{link builder}
@@ -37,7 +42,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
      * @param applicationStreamUri
      * @param publishHystrixMetrics
      */
-    HystrixBundle(final String adminStreamPath,
+    public HystrixBundle(final String adminStreamPath,
                   final String applicationStreamUri,
                   final boolean publishHystrixMetrics) {
         this.adminStreamPath = adminStreamPath;
@@ -133,7 +138,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
     public static class Builder {
         private String adminPath = DEFAULT_STREAM_PATH;
         private String applicationPath;
-        private boolean publishHystrixMetrics = true;
+        private boolean publishHystrixMetrics = DEFAULT_PUBLISH_HYSTRIX_METRICS;
 
         /**
          * Configure the path that the HystrixMetricsStreamServlet will be mapped to in the admin context
