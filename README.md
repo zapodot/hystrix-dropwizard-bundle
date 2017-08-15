@@ -69,7 +69,7 @@ Starting with version 0.9, you may now implement your own mechanism for specifyi
 published to DropWizard Metrics by adding your own lambda expression to the withMetricsPublisherPredicate builder method
 ```java
     HystrixBundle.builder()
-                .withMetricsPublisherPredicate(() -> true)
+                .withMetricsPublisherPredicate((c) -> true) // c is your application configuration POJO
                 .build();
 ``` 
 __Note__: The now defunct version 0.8 implemented another approach which included overriding a method on Hystrix bundle. 

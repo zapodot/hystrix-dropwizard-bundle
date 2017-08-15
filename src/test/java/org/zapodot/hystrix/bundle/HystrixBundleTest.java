@@ -113,7 +113,7 @@ public class HystrixBundleTest {
     @Test
     public void testConfigurableMetricsPublisher() {
         final HystrixBundle hystrixBundle = HystrixBundle.builder()
-                .withMetricsPublisherPredicate(() -> true)
+                .withMetricsPublisherPredicate((c) -> true)
                 .build();
         
         hystrixBundle.initialize(bootstrap);

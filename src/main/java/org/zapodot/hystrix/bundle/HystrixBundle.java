@@ -26,14 +26,15 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
     static final String DEFAULT_STREAM_PATH = "/hystrix.stream";
     static final boolean DEFAULT_PUBLISH_HYSTRIX_METRICS = true;
     static final String SERVLET_NAME = "hystrixMetricsStream";
+    static final MetricsPublishPredicate DEFAULT_PUBLISH_PREDICATE = (c) -> DEFAULT_PUBLISH_HYSTRIX_METRICS;
     private static final Logger logger = LoggerFactory.getLogger(HystrixBundle.class);
 
     private final String adminStreamPath;
     private final String applicationStreamUri;
-    private final boolean publishHystrixMetrics;
+    private final MetricsPublishPredicate publishPredicate;
 
     public HystrixBundle() {
-        this(DEFAULT_STREAM_PATH, null, DEFAULT_PUBLISH_HYSTRIX_METRICS);
+        this(DEFAULT_STREAM_PATH, null, DEFAULT_PUBLISH_PREDICATE);
     }
 
     /**
@@ -42,14 +43,14 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
      *
      * @param adminStreamPath
      * @param applicationStreamUri
-     * @param publishHystrixMetrics
+     * @param publishPredicate
      */
     private HystrixBundle(final String adminStreamPath,
                   final String applicationStreamUri,
-                  final boolean publishHystrixMetrics) {
+                  final MetricsPublishPredicate publishPredicate) {
         this.adminStreamPath = adminStreamPath;
         this.applicationStreamUri = applicationStreamUri;
-        this.publishHystrixMetrics = publishHystrixMetrics;
+        this.publishPredicate = publishPredicate;
     }
 
     /**
@@ -99,7 +100,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
                     .addServlet(new ServletHolder(SERVLET_NAME, new HystrixMetricsStreamServlet()),
                             applicationStreamUri);
         }
-        if (publishHystrixMetrics) {
+        if (publishPredicate.enabled(configuration)) {
             logger.info("Enabling the Hystrix to DropWizard metrics publisher");
             final HystrixCodaHaleMetricsPublisher metricsPublisher =
                     new HystrixCodaHaleMetricsPublisher(environment.metrics());
@@ -113,13 +114,13 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
      * Predicate to be used for deciding whether Hystrix Metrics should be published through DropWizard or not
      */
     @FunctionalInterface
-    public interface MetricsPublishPredicate {
+    public interface MetricsPublishPredicate<T> {
 
         /**
          * Is publishing enabled?
          * @return true to enable, false to disable
          */
-        boolean enabled();
+        boolean enabled(T configuration);
     }
 
     /**
@@ -128,7 +129,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
     public static class Builder {
         private String adminPath = DEFAULT_STREAM_PATH;
         private String applicationPath;
-        private MetricsPublishPredicate metricsPublishPredicate = () -> DEFAULT_PUBLISH_HYSTRIX_METRICS;
+        private MetricsPublishPredicate metricsPublishPredicate = DEFAULT_PUBLISH_PREDICATE;
 
         /**
          * Configure the path that the HystrixMetricsStreamServlet will be mapped to in the admin context
@@ -168,7 +169,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
          * @return the same builder the publisher property set to false
          */
         public Builder disableMetricsPublisher() {
-            return withMetricsPublisherPredicate(() -> false);
+            return withMetricsPublisherPredicate((c) -> false);
         }
 
         /**
@@ -189,7 +190,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
          * @return a new HystrixBundle instance
          */
         public HystrixBundle build() {
-            return new HystrixBundle(adminPath, applicationPath, metricsPublishPredicate.enabled());
+            return new HystrixBundle(adminPath, applicationPath, metricsPublishPredicate);
         }
     }
 }
