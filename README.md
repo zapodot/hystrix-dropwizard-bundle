@@ -65,12 +65,11 @@ If you need some other configuration, use the provided Builder (see example belo
 ```
 
 ### Overriding publishing settings
-Starting with version 0.8, you may now implement your own mechanism for specifying whether Hystrix Metrics should be 
-published to DropWizard Metrics by overriding the _canPublishHystrixMetrics_ method:
+Starting with version 0.9, you may now implement your own mechanism for specifying whether Hystrix Metrics should be 
+published to DropWizard Metrics by adding your own lambda expression to the withMetricsPublisherPredicate builder method
 ```java
-    bootstrap.addBundle( new HystrixBundle() {
-        protected boolean canPublishHystrixMetrics(MyAppConfiguration configuration) {
-            return configuration.isEnableHystrixMetrics();
-        }
-    });
+    HystrixBundle.builder()
+                .withMetricsPublisherPredicate(() -> true)
+                .build();
 ``` 
+__Note__: The now defunct version 0.8 implemented another approach which included overriding a method on Hystrix bundle. 

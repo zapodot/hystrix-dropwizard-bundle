@@ -112,13 +112,10 @@ public class HystrixBundleTest {
 
     @Test
     public void testConfigurableMetricsPublisher() {
-        boolean publishHystrixMetricsByDefault = false;
-        final HystrixBundle hystrixBundle = new HystrixBundle<Configuration>("", "", publishHystrixMetricsByDefault) {
-            @Override
-            protected boolean canPublishHystrixMetrics(Configuration configuration) {
-                return true; //override using configuration value
-            }
-        };
+        final HystrixBundle hystrixBundle = HystrixBundle.builder()
+                .withMetricsPublisherPredicate(() -> true)
+                .build();
+        
         hystrixBundle.initialize(bootstrap);
         hystrixBundle.run(configuration, environment);
         assertTrue(HystrixPlugins.getInstance().getMetricsPublisher() instanceof HystrixCodaHaleMetricsPublisher);

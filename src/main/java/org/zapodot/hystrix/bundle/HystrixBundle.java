@@ -11,6 +11,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 /**
  * A DropWizard bundle that enables the Hystrix event stream to be registered, and the Hystrix metrics to be integrated
  * with DropWizard's metrics
@@ -21,9 +23,9 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
      * The default path that will be used for binding the HystrixMetricsStreamServlet to the admin context.
      */
     @SuppressWarnings("squid:S1075")
-    public static final String DEFAULT_STREAM_PATH = "/hystrix.stream";
-    public static final boolean DEFAULT_PUBLISH_HYSTRIX_METRICS = true;
-    public static final String SERVLET_NAME = "hystrixMetricsStream";
+    static final String DEFAULT_STREAM_PATH = "/hystrix.stream";
+    static final boolean DEFAULT_PUBLISH_HYSTRIX_METRICS = true;
+    static final String SERVLET_NAME = "hystrixMetricsStream";
     private static final Logger logger = LoggerFactory.getLogger(HystrixBundle.class);
 
     private final String adminStreamPath;
@@ -42,7 +44,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
      * @param applicationStreamUri
      * @param publishHystrixMetrics
      */
-    public HystrixBundle(final String adminStreamPath,
+    private HystrixBundle(final String adminStreamPath,
                   final String applicationStreamUri,
                   final boolean publishHystrixMetrics) {
         this.adminStreamPath = adminStreamPath;
@@ -75,32 +77,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
         logger.debug("Resetting Hystrix before changing the configuration");
         HystrixPlugins.reset();
     }
-
-    /**
-     * Determines whether Hystrix metrics should be published as Dropwizard Metrics.
-     * By default it follows what was set using the builder at initialization time.
-     * Override to use some other mechanism to decide. Returning true means metrics should be published.
-     * <p>
-     * Example:
-     * </p>
-     * <pre>
-     *  bootstrap.addBundle( new HystrixBundle() {
-     *   
-     *     protected boolean canPublishHystrixMetrics(MyAppConfiguration configuration) {
-     *       return configuration.isEnableHystrixMetrics();
-     *     }
-     *  });
-     * </pre>
-     *
-     * @param configuration the current configuration as provided by DropWizard
-     * @return boolean which decides whether the metrics to be published or not
-     * @see Builder#disableMetricsPublisher()
-     */
-    @SuppressWarnings("unused")
-    protected boolean canPublishHystrixMetrics(T configuration) {
-        return publishHystrixMetrics;
-    }
-
+    
     /**
      * Setup method for the {@link ConfiguredBundle}
      *
@@ -113,16 +90,16 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
         if (adminStreamPath != null) {
             logger.info("Mapping \"{}\" to the HystrixMetricsStreamServlet in the admin context", adminStreamPath);
             environment.getAdminContext()
-                       .addServlet(new ServletHolder(SERVLET_NAME, new HystrixMetricsStreamServlet()), adminStreamPath);
+                    .addServlet(new ServletHolder(SERVLET_NAME, new HystrixMetricsStreamServlet()), adminStreamPath);
         }
         if (applicationStreamUri != null) {
             logger.info("Mapping \"{}\" to the HystrixMetricsStreamServlet in the application context",
-                        applicationStreamUri);
+                    applicationStreamUri);
             environment.getApplicationContext()
-                       .addServlet(new ServletHolder(SERVLET_NAME, new HystrixMetricsStreamServlet()),
-                                   applicationStreamUri);
+                    .addServlet(new ServletHolder(SERVLET_NAME, new HystrixMetricsStreamServlet()),
+                            applicationStreamUri);
         }
-        if (canPublishHystrixMetrics(configuration)) {
+        if (publishHystrixMetrics) {
             logger.info("Enabling the Hystrix to DropWizard metrics publisher");
             final HystrixCodaHaleMetricsPublisher metricsPublisher =
                     new HystrixCodaHaleMetricsPublisher(environment.metrics());
@@ -133,12 +110,25 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
     }
 
     /**
+     * Predicate to be used for deciding whether Hystrix Metrics should be published through DropWizard or not
+     */
+    @FunctionalInterface
+    public interface MetricsPublishPredicate {
+
+        /**
+         * Is publishing enabled?
+         * @return true to enable, false to disable
+         */
+        boolean enabled();
+    }
+
+    /**
      * A builder that is convenient to use if you need to configure this bundle in any way
      */
     public static class Builder {
         private String adminPath = DEFAULT_STREAM_PATH;
         private String applicationPath;
-        private boolean publishHystrixMetrics = DEFAULT_PUBLISH_HYSTRIX_METRICS;
+        private MetricsPublishPredicate metricsPublishPredicate = () -> DEFAULT_PUBLISH_HYSTRIX_METRICS;
 
         /**
          * Configure the path that the HystrixMetricsStreamServlet will be mapped to in the admin context
@@ -175,10 +165,21 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
         /**
          * Disables the Hystrix to DropWizard (i.e CodaHale) Metrics publisher
          *
-         * @return the same bulder the publisher property set to false
+         * @return the same builder the publisher property set to false
          */
         public Builder disableMetricsPublisher() {
-            publishHystrixMetrics = false;
+            return withMetricsPublisherPredicate(() -> false);
+        }
+
+        /**
+         * Allows clients to specify some other way of specifying whether Hystrix metrics should be published or not
+         *
+         * @param metricsPublisherPredicate a lambda or anonymous implementation of {@link MetricsPublishPredicate}
+         * @return the same builder with the metricsPublishPredicate property set to the given value
+         */
+        public Builder withMetricsPublisherPredicate(final MetricsPublishPredicate metricsPublisherPredicate) {
+            Objects.nonNull(metricsPublisherPredicate);
+            this.metricsPublishPredicate = metricsPublisherPredicate;
             return this;
         }
 
@@ -188,7 +189,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
          * @return a new HystrixBundle instance
          */
         public HystrixBundle build() {
-            return new HystrixBundle(adminPath, applicationPath, publishHystrixMetrics);
+            return new HystrixBundle(adminPath, applicationPath, metricsPublishPredicate.enabled());
         }
     }
 }
