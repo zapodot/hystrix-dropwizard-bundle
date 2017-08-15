@@ -26,13 +26,13 @@ This library is distributed through the Sonatype OSS Repo and should thus be wid
 <dependency>
     <groupId>org.zapodot</groupId>
     <artifactId>hystrix-dropwizard-bundle</artifactId>
-    <version>0.8</version>
+    <version>0.9</version>
 </dependency>
 ```
 
 #### SBT
 ```scala
-libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "0.8"
+libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "0.9"
 ```
 
 ### Add bundle to your application
@@ -73,3 +73,4 @@ published to DropWizard Metrics by adding your own lambda expression to the with
                 .build();
 ``` 
 __Note__: The now defunct version 0.8 implemented another approach which included overriding a method on Hystrix bundle. 
+Putting this on the builder allows us to keep the specialized constructor private which provides us with more flexibility in the future. 
