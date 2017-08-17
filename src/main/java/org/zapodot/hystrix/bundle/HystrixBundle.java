@@ -114,13 +114,13 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
      * Predicate to be used for deciding whether Hystrix Metrics should be published through DropWizard or not
      */
     @FunctionalInterface
-    public interface MetricsPublishPredicate<T> {
+    public interface MetricsPublishPredicate<V extends Configuration> {
 
         /**
          * Is publishing enabled?
          * @return true to enable, false to disable
          */
-        boolean enabled(T configuration);
+        boolean enabled(V configuration);
     }
 
     /**
