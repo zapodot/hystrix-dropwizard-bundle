@@ -118,6 +118,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
 
         /**
          * Is publishing enabled?
+         * @param configuration the application configuration as deserialized by DropWizard
          * @return true to enable, false to disable
          */
         boolean enabled(V configuration);
