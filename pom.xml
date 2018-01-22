@@ -224,8 +224,9 @@
                     <windowtitle>Hystrix DropWizard Bundle API</windowtitle>
                     <encoding>UTF-8</encoding>
                     <links>
+                        <link>https://docs.oracle.com/javase/8/docs/api/</link>
                         <link>http://netflix.github.io/Hystrix/javadoc/</link>
-                        <link>http://dropwizard.github.io/dropwizard/1.1.0/dropwizard-core/apidocs/</link>
+                        <link>http://www.dropwizard.io/1.2.2/dropwizard-core/apidocs/</link>
                     </links>
                     <header>
                         <![CDATA[<b><a href="https://github.com/zapodot/hystrix-dropwzard-bundle">Hystrix DropWizard Bundle API</a>, v. ${project.version}</b>]]></header>
