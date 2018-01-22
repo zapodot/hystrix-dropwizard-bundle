@@ -26,7 +26,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
     static final String DEFAULT_STREAM_PATH = "/hystrix.stream";
     static final boolean DEFAULT_PUBLISH_HYSTRIX_METRICS = true;
     static final String SERVLET_NAME = "hystrixMetricsStream";
-    static final MetricsPublishPredicate DEFAULT_PUBLISH_PREDICATE = (c) -> DEFAULT_PUBLISH_HYSTRIX_METRICS;
+    static final MetricsPublishPredicate DEFAULT_PUBLISH_PREDICATE = c -> DEFAULT_PUBLISH_HYSTRIX_METRICS;
     private static final Logger logger = LoggerFactory.getLogger(HystrixBundle.class);
 
     private final String adminStreamPath;
@@ -170,7 +170,7 @@ public class HystrixBundle<T extends Configuration> implements ConfiguredBundle<
          * @return the same builder the publisher property set to false
          */
         public Builder disableMetricsPublisher() {
-            return withMetricsPublisherPredicate((c) -> false);
+            return withMetricsPublisherPredicate(c -> false);
         }
 
         /**
