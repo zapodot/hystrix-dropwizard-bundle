@@ -6,7 +6,7 @@
 
     <groupId>org.zapodot</groupId>
     <artifactId>hystrix-dropwizard-bundle</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>${project.artifactId}</name>
     <description>A hystrix bundle for DropWizard</description>
     <url>https://github.com/zapodot/hystrix-dropwizard-bundle</url>
