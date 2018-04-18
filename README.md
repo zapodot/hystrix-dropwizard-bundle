@@ -26,13 +26,13 @@ This library is distributed through the Sonatype OSS Repo and should thus be wid
 <dependency>
     <groupId>org.zapodot</groupId>
     <artifactId>hystrix-dropwizard-bundle</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
 #### SBT
 ```scala
-libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "1.0.1"
+libraryDependencies += "org.zapodot" % "hystrix-dropwizard-bundle" % "1.0.2"
 ```
 
 ### Add bundle to your application
@@ -65,12 +65,12 @@ If you need some other configuration, use the provided Builder (see example belo
 ```
 
 ### Overriding publishing settings
-Starting with version 0.9, you may now implement your own mechanism for specifying whether Hystrix Metrics should be 
+Starting with version 0.9, you may now implement your own mechanism for specifying whether Hystrix Metrics should be
 published to DropWizard Metrics by adding your own lambda expression to the withMetricsPublisherPredicate builder method
 ```java
     HystrixBundle.builder()
                 .withMetricsPublisherPredicate((c) -> true) // c is your application configuration POJO
                 .build();
-``` 
-__Note__: The now defunct version 0.8 implemented another approach which included overriding a method on Hystrix bundle. 
-Putting this on the builder allows us to keep the specialized constructor private which provides us with more flexibility in the future. 
+```
+__Note__: The now defunct version 0.8 implemented another approach which included overriding a method on Hystrix bundle.
+Putting this on the builder allows us to keep the specialized constructor private which provides us with more flexibility in the future.
